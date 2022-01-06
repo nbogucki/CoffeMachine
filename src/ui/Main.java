@@ -2,38 +2,64 @@ package ui;
 
 import logic.CoffeeMachine;
 import logic.LatteMacchiatoMaker;
-import logic.view.UserInterface;
+import model.CoffeeDrink;
+import model.SugarAndMilkValue;
+import ui.menu.MenuManager;
+import ui.menu.MenuNode;
+import ui.menu.SubMenu;
+import ui.menu.options.mainMenu.OptionCappuccino;
+import ui.menu.options.OptionExit;
+import ui.menu.options.setMilkAndSugarMenu.OptionHighArrowMilk;
+import ui.menu.options.setMilkAndSugarMenu.OptionHighArrowSugar;
+import ui.menu.options.setMilkAndSugarMenu.OptionLowArrowMilk;
+import ui.menu.options.setMilkAndSugarMenu.OptionLowArrowSugar;
+import ui.menu.options.setMilkAndSugarMenu.OptionMakeCoffee;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Witam wybierz kawe:\n [E] - espresso\n [L] - Latte");
+        MenuManager menuManager = new MenuManager();
+        CoffeeDrink coffeeDrink = new CoffeeDrink();
+        coffeeDrink.setSugarAndMilkValue(new SugarAndMilkValue());
+
+        createMenu(menuManager, coffeeDrink);
+
+        System.out.println("Witam, wybierz rodzaj kawy:");
+        while (! menuManager.needsToQuit()) {
+            menuManager.display();
+            if (menuManager.getCurrentMenu().getName().equals("*** Set Milk And Sugar Submenu ***")) {
+                System.out.println("Milk: "+coffeeDrink.getSugarAndMilkValue().getMilk());
+                System.out.println("Sugar: "+coffeeDrink.getSugarAndMilkValue().getSugar());
+            }
+            try {
+                menuManager.execute();
+            } catch (IndexOutOfBoundsException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
         CoffeeMachine coffeeMachine;
         coffeeMachine = new LatteMacchiatoMaker(new AdvanceUi());
         coffeeMachine.makeCoffee();
     }
 
-    private static class AdvanceUi implements UserInterface {
+    private static void createMenu(MenuManager menuManager, CoffeeDrink coffeeDrink) {
+        MenuNode mainMenu = menuManager.getCurrentMenu();
+        SubMenu setMilkAndSugarMenu = new SubMenu(
+                "*** Set Milk And Sugar Submenu ***",
+                mainMenu,
+                menuManager
+        );
 
-        @Override
-        public void showStep(String msg) {
-            System.out.println("-" + msg);
-        }
+        //Submenu
+        setMilkAndSugarMenu.add(new OptionHighArrowMilk(coffeeDrink));
+        setMilkAndSugarMenu.add(new OptionLowArrowMilk(coffeeDrink));
+        setMilkAndSugarMenu.add(new OptionHighArrowSugar(coffeeDrink));
+        setMilkAndSugarMenu.add(new OptionLowArrowSugar(coffeeDrink));
+        setMilkAndSugarMenu.add(new OptionMakeCoffee(menuManager));
 
-        @Override
-        public void showError(String msg) {
-            System.out.println("##" + msg + "##");
-
-        }
-
-        @Override
-        public void showCoffeeReady(String msg) {
-            System.out.println("==" + msg + "==");
-        }
-
-        @Override
-        public void playSound() {
-            System.out.println("BIEP! BIEP!");
-
-        }
+        //Main Menu
+        mainMenu.add(new OptionCappuccino(coffeeDrink, menuManager, setMilkAndSugarMenu));
+        mainMenu.add(setMilkAndSugarMenu);
+        mainMenu.add(new OptionExit(menuManager));
     }
 }
