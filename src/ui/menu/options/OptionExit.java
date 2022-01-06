@@ -20,6 +20,7 @@ public class OptionExit implements MenuOption {
 
     @Override
     public void execute() {
+        System.out.println("Goodbye!");
         manager.Exit();
     }
 }

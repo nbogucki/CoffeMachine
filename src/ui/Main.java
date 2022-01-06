@@ -57,7 +57,7 @@ public class Main {
         setMilkAndSugarMenu.add(new OptionLowArrowMilk(coffeeDrink));
         setMilkAndSugarMenu.add(new OptionHighArrowSugar(coffeeDrink));
         setMilkAndSugarMenu.add(new OptionLowArrowSugar(coffeeDrink));
-        setMilkAndSugarMenu.add(new OptionMakeCoffee(menuManager));
+        setMilkAndSugarMenu.add(new OptionMakeCoffee(menuManager, coffeeDrink));
 
         //Main Menu
         mainMenu.add(new OptionCappuccino(coffeeDrink, menuManager, setMilkAndSugarMenu));
