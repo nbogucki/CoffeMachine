@@ -37,9 +37,11 @@ public class Main {
             }
         }
 
-        CoffeeMachine coffeeMachine;
-        coffeeMachine = new LatteMacchiatoMaker(new AdvanceUi());
-        coffeeMachine.makeCoffee();
+        if (coffeeDrink.isMakeCoffee()) {
+            CoffeeMachine coffeeMachine;
+            coffeeMachine = new LatteMacchiatoMaker(new AdvanceUi());
+            coffeeMachine.makeCoffee();
+        }
     }
 
     private static void createMenu(MenuManager menuManager, CoffeeDrink coffeeDrink) {
