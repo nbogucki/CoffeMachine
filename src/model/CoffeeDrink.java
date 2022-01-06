@@ -5,6 +5,7 @@ import model.recipes.Recipe;
 public class CoffeeDrink {
     private Recipe recipe;
     private SugarAndMilkValue sugarAndMilkValue;
+    private boolean makeCoffee = false;
 
     public Recipe getRecipe() {
         return recipe;
@@ -20,5 +21,13 @@ public class CoffeeDrink {
 
     public void setSugarAndMilkValue(SugarAndMilkValue sugarAndMilkValue) {
         this.sugarAndMilkValue = sugarAndMilkValue;
+    }
+
+    public boolean isMakeCoffee() {
+        return makeCoffee;
+    }
+
+    public void setMakeCoffee(boolean makeCoffee) {
+        this.makeCoffee = makeCoffee;
     }
 }
